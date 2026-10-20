@@ -51,3 +51,11 @@ The repository root contains entry points and project metadata. Old diagnostics,
 Application code is **MIT**. [Third-party notices](THIRD_PARTY_NOTICES.md) define the separate asset licences.
 
 The public source packages CC0 character motion. The classroom edition’s optional Mixamo dance is separately licensed and excluded from raw source distribution; see [licensing scope](THIRD_PARTY_NOTICES.md). The complete original project and development history are preserved in a private archive.
+
+<!-- CINEMATIC-SKILL-START -->
+## Reusable design skill
+
+The design and implementation experience from this deck and its companion project is documented in [**Cinematic 3D Decks · Skill**](https://github.com/Rayman0106/build-cinematic-3d-decks). It includes model adaptation, narrative continuity, camera movement, semantic typography, preparation, reusable tools and an offline interactive lab.
+
+[Implementation lessons from this project](https://github.com/Rayman0106/build-cinematic-3d-decks/blob/main/references/reaction-time-case-study.md)
+<!-- CINEMATIC-SKILL-END -->
