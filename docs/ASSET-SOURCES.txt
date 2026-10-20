@@ -1,0 +1,166 @@
+Reaction Time Story Deck — Asset and Data Sources
+Sketchfab model edition
+
+1. User-supplied study
+
+Source files:
+Reaction_Time_30_Participants_Final.pdf
+Reaction_Time_30_Participants_Final.docx
+
+Study title: Background Conversation and Visual Reaction Time
+30 participants; 298 retained trials (150 Quiet, 148 Conversation).
+
+Report provenance:
+Page 1: research question, experimental method and cleaning.
+Page 2: Figure 1 histograms and Figure 2 cumulative relative-frequency curves.
+Page 3: Figure 3 box plots and Table 1 pooled statistics.
+Page 4: Table 2 participant means and reported paired differences.
+Page 5: paired summary, conclusion and limitations.
+
+assets/histogram.png and assets/cumulative.png preserve the report's original Figure 1 and Figure 2. No trial-level frequency distribution was invented or reconstructed. assets/boxplot-original.png is a source reference; the displayed box plot is redrawn from Table 1.
+
+charts.js redraws box plots, paired difference charts and appendix tables from reported values. Participant differences are retained as reported; small discrepancies from subtracting the displayed means may result from independent rounding. No complete trial-level dataset was provided, and no significance test is presented.
+
+2. Additional analysis
+
+The sensitivity comparison is approximate and uses the rounded Conversation mean:
+(148 × 253.0 + 2030.5 + 1973.4) ÷ 150 = approximately 276.3 ms.
+
+The comparison Quiet mean is 261.8 ms. This demonstrates sensitivity of the pooled mean comparison to the two stated exclusions; it does not establish that every exclusion was incorrect or reconstruct a raw-trial distribution.
+
+3. Group attribution and fictional narrative
+
+Project attribution checked against Teams:
+A1 Maths Investigation, Group 1.
+Ethan Yang; Aries Xia; Hector Kang; Rayman Guo.
+
+The report does not establish participant recruitment or a randomised/balanced condition order. The deck does not claim those procedures. The 3D room and apparatus are a conceptual illustration, not photographs or an exact reconstruction of the study setup. Nathan represents a fictional investigator, not a participant, group member or quoted real speaker.
+
+The opening shows five preset animation examples: 248, 231, 267, 219 and 243 ms. They are explicitly labelled as example timings, not study data. They are not participant measurements or live audience testing. Sleep, practice, time of day, device and background sound are candidate ideas, not established study findings. Research on the computer means reviewing the supplied report and analysis, not presenting external literature findings. The conclusion dialogue is presentation narration. The closing shows an animated press of the model keyboard's Enter key to confirm an on-screen shutdown dialog. The final thank-you page then moves the chair back, stands the character up and uses an approximately 30-degree bow, pause and return to upright; this 12-second action adds no study data.
+
+There are 15 main slides and two reference appendices. Main-slide timers total 540 seconds (9 minutes); transitions add approximately half a minute. Dialogue is silent text for the presenter to read aloud.
+
+4. Sketchfab model attributions
+
+All four active model sources below are credited under Creative Commons Attribution 4.0 International (CC BY 4.0):
+https://creativecommons.org/licenses/by/4.0/
+License legal text:
+https://creativecommons.org/licenses/by/4.0/legalcode
+
+Keep the work titles, creator credits, source links, license and modification notices when redistributing the models or this adapted presentation. Attribution does not imply the creators endorse this study or presentation.
+
+A. Gaming Desktop PC
+Creator: Yolala3D / Yolala1232
+Sketchfab account retained in the GLB metadata: Yolala1232
+Creator profile: https://sketchfab.com/Yolala1232
+Model: https://sketchfab.com/3d-models/gaming-desktop-pc-d1d8282c9916438091f11aeb28787b66
+Sketchfab model ID: d1d8282c9916438091f11aeb28787b66
+License: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/
+Local source: assets/models/gaming-desktop-pc.glb
+Adaptation: the model's desktop computer, monitor, keyboard, mouse and related computer components are selected, scaled and positioned for the presentation. Components are organised for display and interaction; the monitor faces the seated character, and keyboard and mouse positions follow the seated reach. The mouse remains clear of the rotated keyboard. Study-specific screen graphics and animated cue/shutdown states are added. The tower base is raised to y=1.68, level with the desktop, on an adapted cabinet from the Gaming Room model. Model geometry and source textures are retained for the selected objects.
+
+B. Free Stylized Cartoon Game Boy Character Rigged
+Creator: Canino3d
+Creator profile: https://sketchfab.com/Canino3d
+Model: https://sketchfab.com/3d-models/free-stylized-cartoon-game-boy-character-rigged-92b4b22d14194be191c0df00f6e62b3d
+Sketchfab model ID: 92b4b22d14194be191c0df00f6e62b3d
+License: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/
+Local source: assets/models/student.glb
+Adaptation: original 2K textures, geometry and skin retained; skateboard omitted. The CC joint hierarchy is adapted to the presentation's semantic joints, including a rigid hierarchy/inverse-bind adjustment to handle FBX scale-compensation nodes during IK. New seated pelvis and sole calibration; original deterministic actions, hand targets and camera paths retained. Materials are cloned before adjustment. The downloaded GLB has no facial morph targets; this deck does not claim to use the webpage's advertised 100+ facial blendshapes. Replaces Nathan Animated 003 from the original delivery; that older model is not embedded in this revision.
+
+C. Gaming Room
+Creator: Marcitos
+Creator profile: https://sketchfab.com/Marcitos
+Model: https://sketchfab.com/3d-models/gaming-room-0d582face68e499390e765f38a844b54
+Sketchfab model ID: 0d582face68e499390e765f38a844b54
+License: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/
+Local source: assets/models/room.glb
+Adaptation: source room geometry supplies the desk, chair, shelves, window, floor and walls. The bed and duplicate computer objects are omitted. Selected meshes are grouped or merged and repositioned to fit the presentation's desk layout and camera views. An original drawer-cabinet assembly is reused, resized and positioned beside the desk as a tower stand, with its top at y=1.68. The chair is moved back during the stand-up sequence. The source materials and textures are retained for the selected environment pieces.
+
+D. Bookshelf [CC0]
+Creator: Crew Froebel (@crufro)
+Creator profile: https://sketchfab.com/crufro
+Model: https://sketchfab.com/3d-models/bookshelf-cc0-71af93b1d15f4f48ad836d36110626f7
+Sketchfab model ID: 71af93b1d15f4f48ad836d36110626f7
+License used: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/ . The title/description say CC0, but the model page and download dialog show CC BY 4.0; attribution is retained.
+Local source: assets/models/bookshelf.glb
+Adaptation: uniformly scaled and rotated to face into the room at the original bookshelf position. Original wood and book-cover maps retained; appearance adjusted with cloned materials.
+
+The production presentation uses these four model sources. The PC and room input GLBs remain unchanged; selected runtime materials are cloned and restyled by art-direction.js. Candidate models not used are excluded from the delivery package.
+
+5. Three.js and official loading utilities
+
+Library: Three.js 0.160.0
+Project: https://threejs.org/
+Repository: https://github.com/mrdoob/three.js
+License: MIT; the complete notice is in vendor/THREE-LICENSE.txt and embedded in the HTML.
+
+Pinned source URLs:
+https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js
+https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js
+https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/utils/BufferGeometryUtils.js
+
+Local files:
+vendor/three.module.min.js
+vendor/GLTFLoader.js
+vendor/BufferGeometryUtils.js
+
+These files are embedded in the production HTML. Import paths are mapped to the embedded modules. The recorded CDN URLs document provenance; the finished presentation does not load its library or models from those sites during playback.
+
+6. Locally authored presentation assets
+
+character.js: bind-pose character adaptation and finite seated, standing, bowing and gesture controls; neck/head follow, staggered wrist and finger arrival, chin-follow support, and subtle finite chest/shoulder breathing.
+speakers.js: locally authored smooth cabinet, baffle, woofer, tweeter, controls and support feet. Replaces the visible coarse speaker geometry at the original desk positions. The imported speaker objects are retained but hidden; original model files are unchanged.
+props.js, workstation.js and environment assembly: selected model placement, component grouping, seated workstation alignment and hand-contact anchors.
+scene.js, camera.js and screen-transition.js: lighting, conceptual cue markers, study screen graphics, story timing, action closeups and the 2.7-second physical-monitor-to-slide transition from slide 5 to slide 6, and the reversible 2.7-second screen-to-room transition between slides 12 and 13.
+assets/screen-analysis.png: a locally captured image of this presentation’s own slide 6, used on the 3D monitor during that transition. It contains the supplied report’s histogram within our authored slide layout; it is not a Human Benchmark screenshot or a downloaded model texture.
+assets/screen-limitations.png: a locally captured image of this presentation’s own slide 12, registered to the same imported screen for the return to the investigator. Both slide captures show the current 15-main-slide numbering.
+charts.js: SVG charts and HTML tables from the supplied report.
+content.js, runtime.js and style.css: narrative, presentation layout, navigation, speaker notes and readable thought reveals.
+Official interface reference: Human Benchmark Reaction Time Test, https://humanbenchmark.com/tests/reactiontime . The opening’s large red waiting area, green response cue and blue feedback area were drawn locally in canvas as a conceptual interface reference. No website artwork, screenshot, source code or other asset was downloaded for use in the presentation, and the displayed millisecond values are fixed animation examples, not measurements.
+Fonts: Instrument Serif (Rodrigo Fuenzalida and Jordan Egstad) and Manrope (Mikhail Sharanda), packaged locally under the SIL Open Font License. Playback makes no remote font request.
+Sources: https://github.com/google/fonts/tree/main/ofl/instrumentserif and https://github.com/google/fonts/tree/main/ofl/manrope .
+License notices: assets/fonts/InstrumentSerif-OFL.txt and assets/fonts/Manrope-OFL.txt.
+practice.js authors the Reaction Lab browser-like UI and deterministic example sequence. Updated monitor captures reproduce the revised typography on slides 6 and 12.
+Audio: none.
+
+build.py embeds the scripts, styles, report figures, models and textures into a standalone index.html. Source assets remain available in the accompanying source package. The final visual and playback checks are documented separately in VERIFICATION.txt.
+
+7. GitHub animation and typography refinement (2026-10-17)
+
+Mesh2Motion animation data
+Repository: https://github.com/Mesh2Motion/mesh2motion-app
+Pinned revision: 653a9698f5f315523072f1c3ff3496100401317b
+License: CC0 1.0 Universal for models, rigs and animations; notice in assets/motion/MESH2MOTION-CC0.txt.
+Source files: static/animations/human-base-animations.glb and human-addon-animations.glb. Exact download URLs and SHA256 hashes are in GITHUB-SOURCES.json.
+Adaptations: eight selected clips (Sitting_Idle, Sitting_Talking, Sitting_Exit, Idle Listening, Head Nod, Confused, Bow, Idle_Subtle) sampled at 30 Hz; extracted additive joint rotations in a common orientation basis, plus relative hand and elbow paths. Runtime retargets the axes to the student's preserved skeleton, blends body layers through Three.js AnimationMixer and applies original contact IK afterwards. The Confused head-reaching path is mirrored and registered to the chin-support anchor; only a short phrase of Sitting_Talking drives the single summary gesture. These are authored library animations; no motion-capture claim is made for these eight clips. The original source meshes are not shipped or rendered.
+The reproducible extractor is assets/motion/bake-reference.mjs. Supply a directory containing the two pinned GLBs as its command-line argument to regenerate study-motion.json. Playback uses the packaged JSON and never downloads animation assets.
+
+Splitting.js
+Repository: https://github.com/shshaw/Splitting
+Pinned revision: d5a8fd0137e90770ae10d2e0e874a4a101161544
+Author: Stephen Shaw
+License: MIT; complete notice in vendor/SPLITTING-LICENSE.txt and embedded in the standalone HTML.
+Local runtime: vendor/splitting.min.js (unmodified). Used in words mode to preserve font kerning; typography.js authors mask, perspective, word staggering and the presentation-clock sampling. No GSAP or React dependency is added.
+
+Research references evaluated but not included in the runtime: pmndrs/math (springs and FABRIK) and jsantell/THREE.IK (FABRIK chains). Their code and assets are not copied. Existing analytic contact IK is retained because animation quality requires authored motion as well as contact constraints.
+
+2026-10-17 clothing/motion repair: two untextured covered body proxies (Object_9 / lambert20 and Object_12 / lambert17) are hidden to stop their polygons showing through the authored garments. Textured exposed skin and both outer garments remain visible. Native source GLBs are unchanged. Free arm chains now use authored rotations; adapted Sitting_Exit, Bow and Idle_Subtle reference clips extend the closing motion, with staggered foot plants and a relaxed hand/elbow rest pose. See WARDROBE-MOTION-REPAIR.md.
+
+8. Full-body animation and shorts binding repair (2026-10-18)
+
+The primary closing sequence now retargets complete Sitting_Exit, Turn_Left_90, Bow and Idle_Subtle poses, hip/root movement and footwork. Turn_Left_90 is selected from the pinned human-mocap-animations.glb. All three CC0 reference GLBs are included in assets/motion/reference/; their exact URLs and hashes are in GITHUB-SOURCES.json. The 60 Hz target-specific sequence is generated by assets/motion/bake-closing.mjs, called by bake-reference.mjs. It is adapted for the student's proportions, floor contact, audience direction and restrained bow.
+
+Independent retargeting implementation based on the shared auxiliary-pose/world-space method described at https://github.com/upf-gti/retargeting-threejs/blob/main/docs/Algorithm.md . Clothing-face coverage and barycentric weight transfer references: https://github.com/makehumancommunity/mpfb2/blob/master/docs/services/clothesservice.md . No code from these two research repositories is copied or shipped.
+
+Source character adaptations now include shared bind normalization, lower-shorts weight transfer, local hem clearance, covered upper-leg triangle removal, and knee/elbow share-joint posing. The original source GLBs remain unchanged. The 2026-10-17 documents above describe preceding revisions; FULLBODY-REVISION.md and VERIFICATION.txt describe the delivered implementation.
+
+Local repair, 2026-10-18: normalized anatomical leg roll, aligned closing clips and sequential closing steps; continuous crotch binding and standing gusset corrective with seated hem preservation; cyclic seated torso layers removed. Original GLB and texture files remain unchanged.
+
+
+2026-10-18 closing dance addition
+Existing CC0 Mesh2Motion template: Dance_Simple in the pinned human-base-animations.glb above. Native duration 1.25 seconds; retained original source bytes. Full-body auxiliary-pose retarget sampled at 60 Hz, contact correction for the original student sneakers, playback rate 0.85. Runtime crossfades the sourced clip into a six-second block between the original turn and bow. No procedural dance choreography or motion-capture claim. Provenance and source SHA256: DANCE-TEMPLATE-REVISION.md and qa-dance-template-results.json.
+
+
+2026-10-18 meme-dance replacement (current)
+Dance_Simple above is historical. The current final page incorporates the sourced Mixamo Gangnam Style performance from V-Sekai/three-vrm-1-sandbox-mixamo, commit 9c13ee8eeefcbf18a0bcc80cd49ac59cd4af73e4. Original FBX SHA256: 119f68a45ad10afec2facdef4f3f9a85e25659c46a368fb1555d6c116b9ae2d7. Asset license is Adobe Mixamo terms, not CC0 or the sample code MIT license. Raw FBX is a private build input outside this deliverable; only retargeted performance data is embedded. Source URLs, official loader hashes and terms: assets/motion/MIXAMO-SOURCE.json. Adaptation, timing and rebuild instructions: MEME-DANCE-REVISION.md.

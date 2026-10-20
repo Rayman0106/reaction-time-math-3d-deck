@@ -1,0 +1,80 @@
+// Deterministic runtime state-machine checks using the real runtime/content and
+// a minimal DOM/scene harness. GPU appearance remains a separate browser check.
+import fs from 'node:fs';
+import vm from 'node:vm';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import assert from 'node:assert/strict';
+const base=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../..');
+const releaseMode=process.argv.includes('--release');
+const fullscreenMode=process.argv.find(s=>s.startsWith('--fullscreen='))?.split('=')[1]||'success';
+assert(['success','denied','unsupported','already','throws'].includes(fullscreenMode));
+let clock=0,sections=[],overview=[],lastSample=null,lastTypeSample=null,lastMotionSample=null,rafRequests=0,fullscreenRequests=0,completeFullscreen=null;const preparationEvents=[];
+class Element {
+  constructor(name=''){this.name=name;this.style={};this.dataset={};this.hidden=true;this.attributes={};this.textContent='';this.classes=new Set();this.classList={toggle:(s,on)=>{if(on===undefined)on=!this.classes.has(s);on?this.classes.add(s):this.classes.delete(s);},add:s=>this.classes.add(s),remove:s=>this.classes.delete(s)};}
+  set innerHTML(text){this.html=text;if(this.name==='#slides')sections=[...text.matchAll(/<section class="([^"]*)" data-index="(\d+)"/g)].map(m=>{const el=new Element('slide'+m[2]);el.dataset.index=m[2];el.classes=new Set(m[1].split(' '));return el;});if(this.name==='#overview-grid')overview=[...text.matchAll(/data-slide="(\d+)"/g)].map(m=>{const el=new Element();el.dataset.slide=m[1];return el;});}
+  get innerHTML(){return this.html||'';}
+  setAttribute(k,v){this.attributes[k]=v;}
+  addEventListener(){}
+  querySelectorAll(){return [];}
+  removeAttribute(k){delete this.attributes[k];}
+}
+const removedInRelease=new Set(['#notes','#notes-content','#notes-toggle','#close-notes','#replay','#auto','#motion','#credits','#credits-toggle','#close-credits','#fullscreen']);
+const elements=new Map(),query=s=>{if(releaseMode&&removedInRelease.has(s))return null;if(!elements.has(s))elements.set(s,new Element(s));return elements.get(s);};
+const lists={'.idea':Array.from({length:5},(_,i)=>{const e=new Element();e.dataset.idea=i;return e;}),'[data-cue]':['wait','green','click'].map(c=>{const e=new Element();e.dataset.cue=c;return e;})};
+const events={};
+const document={querySelector:query,querySelectorAll:s=>s==='.slide'?sections:s==='.overview-item'?overview:lists[s]||[],images:[],fonts:{ready:Promise.resolve()},body:new Element('body'),documentElement:new Element(),addEventListener:(name,fn)=>events[name]=fn};
+if(fullscreenMode==='already')document.fullscreenElement=document.documentElement;
+if(fullscreenMode!=='unsupported')document.documentElement.requestFullscreen=options=>{fullscreenRequests++;assert.equal(options.navigationUI,'hide');if(fullscreenMode==='throws')throw new Error('Fullscreen unavailable');if(fullscreenMode==='denied')return Promise.reject(new Error('Fullscreen denied'));return new Promise(resolve=>{completeFullscreen=()=>{document.fullscreenElement=document.documentElement;resolve();};});};
+const scene={episodeDuration:i=>({0:9,1:14,2:18,3:10,12:10,13:8,14:24}[i]||0),sample:(...args)=>lastSample=args,render(){},resize(){},async warmup(options){preparationEvents.push('gpu');const deck=context.window.__DECK__,start=deck.index;deck.go(0);assert.equal(deck.index,start,'Navigation must wait for preparation');events.keydown({key:'ArrowRight',target:{closest:()=>false},preventDefault(){}});assert.equal(deck.index,start);clock+=3000;options.onProgress(1,1,'GPU stub');await options.yieldControl();}};
+const context=vm.createContext({window:{DECK_RELEASE:releaseMode},document,console,THREE:{},performance:{now:()=>clock},location:{hash:'#12',search:releaseMode?'?capture&still=2&transition=9-10':''},matchMedia:()=>({matches:false}),innerWidth:1920,innerHeight:1080,devicePixelRatio:1,requestAnimationFrame:()=>++rafRequests,setTimeout:()=>1,clearTimeout(){},addEventListener(){},URLSearchParams});
+vm.runInContext(fs.readFileSync(base+'/src/practice.js','utf8'),context);
+vm.runInContext(fs.readFileSync(base+'/src/opening-loop.js','utf8'),context);
+vm.runInContext(fs.readFileSync(base+'/src/content.js','utf8'),context);
+vm.runInContext(fs.readFileSync(base+'/src/motion.js','utf8'),context);
+const actualMotion=context.window.DeckMotion;context.window.DeckMotion={...actualMotion,sample(el,i,t){lastMotionSample={index:i,time:t};actualMotion.sample(el,i,t);}};
+vm.runInContext(fs.readFileSync(base+'/src/analysis-transitions.js','utf8'),context);
+const actualAnalysis=context.window.DeckAnalysisTransitions;let activeFX=null;
+context.window.DeckAnalysisTransitions={...actualAnalysis,create(){return{async prepare(){preparationEvents.push('chart-traces');},begin(from,to){return{from,to,kind:actualAnalysis.kinds[Math.min(from,to)-5],...actualAnalysis.timing(from,to),chartFloor:({5:3.6,6:4.2,7:4.8,8:3.5,9:4.4,10:0,11:3.5}[to]||0)};},sample(fx,p){activeFX={kind:fx.kind,p};return{fromOpacity:1-p,toOpacity:p,canvasAlpha:Math.sin(Math.PI*p),fromTransform:'none',toTransform:'none'};},decorate(){assert(lastMotionSample,'Native reveals must follow the original body sample');},clear(){activeFX=null;},inspect(){return{active:activeFX};}};}};
+context.window.DeckPreparation={async decode(){preparationEvents.push('assets');clock+=400;return{};},step(stage,done,total){if(stage==='pages'&&done===total)preparationEvents.push('pages-complete');},async tick(){clock+=16;},finish(){preparationEvents.push('finish');query('#loading').hidden=false;},dismiss(){preparationEvents.push('start');query('#loading').hidden=true;},inspect(){return{};}};
+context.window.DeckTypography={async prepare(sections,options){preparationEvents.push('titles');options.onProgress(sections.length,sections.length);await options.yieldControl();},sample:(el,t)=>lastTypeSample={index:Number(el.dataset.index),time:t},duration:()=>1.6};
+context.window.DeckCharts=new Proxy({},{get:()=>()=>''});context.window.DECK_ASSETS={histogram:'hist',cumulative:'cum'};context.window.createReactionScene=async()=>scene;
+await vm.runInContext('(async()=>{'+fs.readFileSync(base+'/src/runtime.js','utf8')+'\nwindow.QA={frame,go,settled,toggleAuto,html,sources,transitionTypes,darks,MAIN_COUNT,durationFor,get auto(){return auto}};})()',context);
+const opacity=el=>el.style.opacity!==''&&el.style.opacity!==undefined?Number(el.style.opacity):el.classes.has('slide')?(el.classes.has('active')?1:0):1;
+const qa=context.window.QA,deck=context.window.__DECK__,snap=()=>({page:opacity(sections[11])*opacity(query('#presentation-layer')),person:opacity(sections[12])*opacity(query('#presentation-layer')),chrome:opacity(query('#masthead'))*opacity(query('#presentation-layer')),scene:opacity(query('#scene')),light:query('#stage').classes.has('light'),count:query('#slide-count').textContent});
+assert.deepEqual(preparationEvents,['assets','titles','gpu','chart-traces','pages-complete','finish']);assert.equal(deck.inspect().ready,true);assert.equal(deck.inspect().started,false);assert.equal(query('#loading').hidden,false);assert.equal(rafRequests,0,'Prepared deck must wait without a playback render loop');assert.equal(query('#viewport').inert,true);assert.equal(query('#controls').inert,true);assert(clock>4000,'The test must include a nontrivial preparation delay');
+const waitingIndex=deck.index;clock+=60000;qa.frame(clock);deck.go(0);query('#next').onclick();query('#overview').onclick();events.keydown({key:'ArrowRight',target:{closest:()=>false},preventDefault(){}});assert.equal(deck.index,waitingIndex);assert.equal(query('#overview-panel').hidden,true);assert.equal(lastTypeSample.time,0);assert.equal(rafRequests,0,'Waiting time must consume neither animation nor frames');
+assert.equal(fullscreenRequests,0,'Fullscreen must not be requested before the user gesture');assert.equal(query('#start').onclick(),true);
+if(fullscreenMode==='success'){assert.equal(deck.inspect().starting,true);assert.equal(deck.inspect().started,false);assert.equal(query('#loading').hidden,false);assert.equal(query('#start').disabled,true);assert.equal(deck.start(),false);clock+=5000;qa.frame(clock);deck.go(0);assert.equal(deck.index,waitingIndex);assert.equal(rafRequests,0,'Fullscreen switching must not consume the opening animation');completeFullscreen();}
+await new Promise(resolve=>setImmediate(resolve));
+assert.equal(fullscreenRequests,['unsupported','already'].includes(fullscreenMode)?0:1);assert.equal(deck.inspect().starting,false);assert.equal(deck.inspect().started,true);assert.equal(query('#loading').hidden,true);assert.equal(query('#viewport').inert,false);assert.equal(query('#controls').inert,false);assert.equal(rafRequests,1);assert.equal(deck.start(),false);assert.equal(rafRequests,1,'Double-clicking Start must not create a second loop or reset clocks');qa.frame(clock);assert.equal(lastTypeSample.time,0,'The selected page must begin at zero after the manual start/fullscreen change');assert.equal(lastMotionSample.time,0,'Warmup must clear chart handoff floors');
+const frameAt=(transition,p)=>{clock=transition.start+transition.duration*p;qa.frame(clock);return snap();};
+assert.equal(qa.MAIN_COUNT,15);assert.equal(sections.length,17);assert.equal(qa.sources.length,17);assert.equal(qa.transitionTypes.length,17);assert.equal(qa.durationFor(14),24);assert(qa.darks.has(14));assert(qa.html[14].includes('Thank<br><em>you.</em>'));assert(qa.html[15].includes('id="title-15"'));assert(qa.html[16].includes('id="title-16"'));assert(qa.html[13].includes('id="power-status"'));assert(!qa.html[0].includes('demo-results'));assert(!qa.html[2].includes('small-note'));
+qa.go(12);let tr=deck.transition;assert.equal(tr.duration,2700);assert.equal(query('#slide-count').textContent,'12 / 15');
+const forward=[];for(const p of [0,.06,.12,.18,.5,.86,.93,.99]){forward.push({p,...frameAt(tr,p)});assert.equal(lastSample[2],p);assert.equal(lastSample[3],0);}
+assert.equal(forward[0].page,1);assert.equal(forward[3].page,0);assert.equal(forward[4].person,0);assert.equal(forward[4].chrome,0);assert.equal(forward[6].count,'13 / 15');
+frameAt(tr,1);assert.equal(deck.transition,null);assert.deepEqual(lastSample,[12,12,1,0]);clock+=1800;qa.frame(clock);assert(Math.abs(lastSample[3]-1.8)<1e-9);
+qa.go(11);tr=deck.transition;assert.equal(tr.fromStorySeconds,1.8);const backward=[];for(const p of [0,.01,.07,.14,.5,.82,.88,.94,1])backward.push({p,...frameAt(tr,p)});assert.equal(deck.index,11);assert.equal(query('#slide-count').textContent,'12 / 15');assert.equal(sections[11].style.background,'');
+qa.go(12,true);tr=deck.transition;assert.equal(tr.from,11);assert.equal(tr.to,12);frameAt(tr,.5);qa.go(14);assert.equal(sections[11].style.background,'');frameAt(deck.transition,1);assert.equal(deck.index,14);assert.equal(query('#slide-count').textContent,'15 / 15');
+if(!releaseMode){qa.toggleAuto();clock+=context.window.DECK_CONTENT[14].duration*1000+1;qa.frame(clock);assert.equal(qa.auto,false);assert.equal(deck.index,14);}
+qa.go(16);frameAt(deck.transition,1);assert.equal(query('#slide-count').textContent,'APPENDIX B');events.keydown({key:'End',target:{closest:()=>false},preventDefault(){}});assert.equal(deck.index,14);
+qa.go(4);frameAt(deck.transition,1);qa.go(5);tr=deck.transition;const entry=[];for(let j=0;j<=20;j++){const p=.9+j*.005;frameAt(tr,p);const plane=opacity(query('#presentation-layer')),source=opacity(query('#scene'));assert.equal(plane+source*(1-plane),1);entry.push({p,plane,source,coverage:plane+source*(1-plane)});}assert.equal(deck.index,5);assert.equal(lastTypeSample.index,5);assert.equal(lastTypeSample.time,0,'Monitor title starts in place and then animates on arrival');clock+=500;qa.frame(clock);assert.equal(lastTypeSample.time,.5,'Title clock must advance with the chart instead of staying held');
+const analysisTransitions=[];
+for(let from=5;from<11;from++)for(const[a,b]of[[from,from+1],[from+1,from]]){
+ if(deck.index!==a){qa.go(a);if(deck.transition)frameAt(deck.transition,1);}qa.settled(a,{finish:true});qa.go(b);const tr=deck.transition;assert(tr.analysis);assert.equal(tr.duration,actualAnalysis.duration(a,b));let last=0;
+ for(let f=0;f<60;f++){
+  const p=f/60;frameAt(tr,p);assert.equal(Number(sections[a].style.opacity)+Number(sections[b].style.opacity),1);assert.equal(sections[a].style.transform,'none');assert.equal(sections[b].style.transform,'none');assert.equal(lastMotionSample.index,b);assert(lastMotionSample.time>=tr.fx.chartFloor,'A chart assembled by the transfer must not replay an empty chart intro');
+  assert.equal(lastTypeSample.index,b);assert(lastTypeSample.time>=last);last=lastTypeSample.time;
+ }
+ const arrivalSeconds=(1-tr.fx.incomingAt)*tr.duration/1000;frameAt(tr,1);assert(Math.abs(lastTypeSample.time-arrivalSeconds)<1e-9,'New page must not restart its animation at arrival');assert.equal(deck.inspect().chartTransition.active,null,'The transfer canvas must be cleared after landing');clock+=250;qa.frame(clock);assert(Math.abs(lastTypeSample.time-arrivalSeconds-.25)<1e-9);analysisTransitions.push({from:a+1,to:b+1,kind:tr.fx.kind,chartFloor:tr.fx.chartFloor,arrivalSeconds,clockContinues:true});
+}
+qa.go(5);if(deck.transition)frameAt(deck.transition,1);qa.settled(5,{finish:true});qa.go(4);tr=deck.transition;assert.equal(tr.duration,2700);for(const p of[0,.05,.10,.5,.9,1])frameAt(tr,p);assert.equal(deck.index,4);assert.equal(query('#slide-count').textContent,'05 / 15');
+const result={pass:true,manualStart:{noFramesBeforeClick:true,sixtySecondWaitPreservesZero:true,navigationLocked:true,doubleClickSafe:true,releaseQueryCannotBypass:releaseMode},fullscreen:{scope:'Mocked Fullscreen API and runtime clocks; not browser fullscreen verification.',mode:fullscreenMode,requests:fullscreenRequests,gestureOnly:true,openingStartsAtZero:true,pendingCoverHeld:fullscreenMode==='success',fallbackStartsPlayback:['denied','unsupported','throws'].includes(fullscreenMode)},entry,analysisTransitions,mainCount:qa.MAIN_COUNT,sections:sections.length,forward,backward,checks:['prepared deck waits for explicit Start without advancing clocks or rendering','Start requests fullscreen, holds clocks through viewport change, and permits a normal fallback','source metadata retained through monitor handoff','raw absolute progress reaches scene','conclusion episode starts after pullback','reverse navigation preserves departure time','replay and interruption clear temporary page background','closing dance/bow has twenty-four-second action and stops autoplay','appendix indexing and End navigation','all twelve analysis directions use chart-led transfers and clear their canvas','incoming title clock continues and assembled charts stay complete at landing','screen entry works in both navigation directions']};
+if(releaseMode){
+ const before=deck.index;for(const key of ['r','R','n','N','p','P','m','M','f','F'])events.keydown({key,target:{closest:()=>false},preventDefault(){}});
+ assert.equal(deck.index,before);assert.equal(deck.transition,null);assert.equal(qa.auto,false);
+ query('#overview').onclick();assert.equal(query('#overview-panel').hidden,false);events.keydown({key:'Escape',target:{closest:()=>false}});assert.equal(query('#overview-panel').hidden,true);
+ query('#next').onclick();frameAt(deck.transition,1);assert.equal(deck.index,before+1);query('#prev').onclick();frameAt(deck.transition,1);assert.equal(deck.index,before);
+ result.release=true;result.checks=result.checks.filter(x=>!x.includes('stops autoplay'));result.checks.push('release boots with removed presenter nodes absent','previous/next/Slides controls work','presenter hotkeys disabled in release','Escape closes Slides without a notes panel');
+}
+const resultName=(releaseMode?'qa-release-runtime':'qa-runtime-transitions')+(fullscreenMode==='success'?'':'-fullscreen-'+fullscreenMode)+'-results.json';fs.writeFileSync(path.join(base,'tools/qa',resultName),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify({pass:true,release:releaseMode,fullscreen:fullscreenMode,checks:result.checks.length}));

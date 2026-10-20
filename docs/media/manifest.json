@@ -1,0 +1,82 @@
+{
+  "images": [
+    {
+      "file": "docs/media/study-room.jpg",
+      "source": "work/reaction-time-20261018/previews/report-content-page4.png",
+      "sourceSha256": "715c56211498f641a63e823a8f68c3e45062fa98b9111e3d81f16e6e7f3afddb",
+      "crop": null,
+      "pixels": [
+        1280,
+        720
+      ],
+      "sha256": "de44cc6226fa53c5dcbef2ae533e5c1fece559ab561e4d35ea714779d9ee17d1",
+      "bytes": 115809
+    },
+    {
+      "file": "docs/media/distribution.jpg",
+      "source": "work/reaction-time-20261018/previews/report-content-page8.png",
+      "sourceSha256": "c918fc68776912a8b59d755a0c33c877f02ebc88c5efab31efb6483befcd259f",
+      "crop": null,
+      "pixels": [
+        1280,
+        720
+      ],
+      "sha256": "dd37cc89097524190fd596b29ad98ec4919d189dc3865c38722998d253da1075",
+      "bytes": 66005
+    },
+    {
+      "file": "docs/media/sensitivity.jpg",
+      "source": "work/reaction-time-20261018/previews/report-content-page11.png",
+      "sourceSha256": "dc8df76f90fa1f56b42d097738c99836513875ba0eed1f12f97047a5d3ece146",
+      "crop": null,
+      "pixels": [
+        1280,
+        720
+      ],
+      "sha256": "db6f1b2f7ad46b27f83ecb5638983946b62be54cff7adbe187177b2f752cd678",
+      "bytes": 78352
+    },
+    {
+      "file": "docs/media/closing.jpg",
+      "source": "work/reaction-time-20261018/previews/meme-dance-9-5.png",
+      "sourceSha256": "3e18b3391dfb7b919e46a757ec115d85e5db28062e6e52ff1a413559e39974c2",
+      "crop": [
+        0,
+        121,
+        1781,
+        1123
+      ],
+      "pixels": [
+        1600,
+        900
+      ],
+      "sha256": "3dbfd222ec2fff0eee31c3c0013e6ef3df56f076bb538a0d6bdc9275dd91eb9b",
+      "bytes": 148793
+    },
+    {
+      "file": "docs/media/character-motion.gif",
+      "source": "previews/fullbody-motion.gif",
+      "sha256": "bbee7d3f5ea045dffcbf5c1236958b410aff1bc90a421e073bd61d162efb3961",
+      "bytes": 4037711,
+      "frames": 103,
+      "seconds": 11.2,
+      "kind": "archived-scene-motion"
+    }
+  ],
+  "releaseAssets": [
+    {
+      "name": "Reaction-Time-Scene-Gallery.mp4",
+      "sha256": "c3259ab24a6af3608f4c5d6b5ebca0998ff3867cbfc1084aded1c3bc9b79fc42",
+      "bytes": 818222,
+      "seconds": 22.2,
+      "pixels": [
+        1280,
+        720
+      ],
+      "fps": 30,
+      "audio": false,
+      "kind": "saved-screenshot-gallery"
+    }
+  ],
+  "notes": "# Preview provenance\n\nThis gallery uses screenshots already saved in the project `previews/` directory. It shows the 3D study room, pooled distribution comparison, sensitivity analysis and closing scene. The closing screenshot has only its surrounding letterbox borders removed. The original scene content, labels and values are unchanged.\n\n`Reaction-Time-Scene-Gallery.mp4` is a 22.2-second crossfade slideshow made from those four screenshots, at 1280 \u00d7 720 / 30 fps, with no audio. It is a scene gallery, not a fresh recording of the current typography, dance or page-transition timing. Some saved screenshots predate the final motion revisions.\n\nThe browser security policy blocked opening the local HTML during this update; no alternate browser, protocol, automation surface or HTML renderer was used to bypass it. Use the final HTML release to experience the current interactive animations.\n\nExisting project attribution continues to apply. Source references, crops and hashes are in `manifest.json`.\n"
+}

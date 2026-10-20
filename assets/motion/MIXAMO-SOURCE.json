@@ -1,0 +1,53 @@
+{
+  "repository": "https://github.com/V-Sekai/three-vrm-1-sandbox-mixamo",
+  "commit": "9c13ee8eeefcbf18a0bcc80cd49ac59cd4af73e4",
+  "assetLicense": "Adobe Mixamo terms; incorporated performance only, not a raw-asset redistribution license",
+  "terms": [
+    "https://helpx.adobe.com/creative-cloud/faq/mixamo-faq.html",
+    "https://community.adobe.com/questions-696/mixamo-faq-licensing-royalties-ownership-eula-and-tos-589400?lang=en"
+  ],
+  "files": [
+    {
+      "file": "Gangnam Style.fbx",
+      "url": "https://raw.githubusercontent.com/V-Sekai/three-vrm-1-sandbox-mixamo/9c13ee8eeefcbf18a0bcc80cd49ac59cd4af73e4/Gangnam%20Style.fbx",
+      "bytes": 947360,
+      "sha256": "119f68a45ad10afec2facdef4f3f9a85e25659c46a368fb1555d6c116b9ae2d7"
+    },
+    {
+      "file": "reference-repo-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/V-Sekai/three-vrm-1-sandbox-mixamo/9c13ee8eeefcbf18a0bcc80cd49ac59cd4af73e4/LICENSE",
+      "bytes": 1104,
+      "sha256": "8788c3894e87c234c5122aa0434f797857d8f5f197e7929def8ba597428d14e7"
+    },
+    {
+      "file": "FBXLoader.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r160/examples/jsm/loaders/FBXLoader.js",
+      "bytes": 101466,
+      "sha256": "e8c2a47dffc04ca5699839a6d80fa9140fd9c943f62cea8d074736d7de9c5d98"
+    },
+    {
+      "file": "fflate.module.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r160/examples/jsm/libs/fflate.module.js",
+      "bytes": 83291,
+      "sha256": "5686c3d02432a47d8e31f16cabc2d725bbf4531a3abb37cc6fd00142256e3730"
+    },
+    {
+      "file": "NURBSCurve.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r160/examples/jsm/curves/NURBSCurve.js",
+      "bytes": 1878,
+      "sha256": "34dee297704432358680934a8d5acae35f05c71aa59ce7a8e97decb0ac38e452"
+    },
+    {
+      "file": "NURBSUtils.js",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r160/examples/jsm/curves/NURBSUtils.js",
+      "bytes": 7861,
+      "sha256": "86bcf4002721854739f6dc7fd185b5eb0540d6b8676feaae6979bb605baac85e"
+    },
+    {
+      "file": "THREE-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/mrdoob/three.js/r160/LICENSE",
+      "bytes": 1081,
+      "sha256": "852e0e8699169bf9f6fdc6bda3e682d078dcbc738b5d33e74df594721bff271d"
+    }
+  ]
+}
